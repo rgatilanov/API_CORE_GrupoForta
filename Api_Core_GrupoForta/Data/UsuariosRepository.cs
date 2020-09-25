@@ -5,15 +5,21 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MimeKit;
+using Api_Core_GrupoForta.Models.Share;
+using Api_Core_GrupoForta.Tools;
 
 namespace Api_Core_GrupoForta.Data
 {
     public class UsuariosRepository
     {
         private readonly string _ConectionString;
-        public UsuariosRepository(IConfiguration configuration)
+        private readonly IConfiguration configuration;
+        public UsuariosRepository(IConfiguration _configuration)
         {
             _ConectionString = configuration.GetConnectionString("defultConnection");
+            configuration = _configuration;
         }
         public async Task<UsuarioMin> EstablecerLogin(ReqLogin stockRequest)
         {
@@ -54,6 +60,16 @@ namespace Api_Core_GrupoForta.Data
             }
 
             return response;
+        }
+
+        public async Task<bool> EnviarCorreo(ReqCorreo req) {
+            Funciones fn = new Funciones();
+
+            NotificationMetadata noti = configuration.GetSection("NotificationMetadata").Get<NotificationMetadata>();
+
+            noti.Reciever = req.correo;
+
+            return await fn.SendEmail("Prueba correo","Se envió información de FIREBASE desde API CORE \n" + "\n" + req.informacion, noti);
         }
     }
 }

@@ -11,6 +11,12 @@ namespace Api_Core_GrupoForta.Models.UsuariosModel
         public string Usr_Password { get; set; }
     }
 
+    public class ReqCorreo
+    {
+        public string correo { get; set; }
+        public string informacion { get; set; }
+    }
+
     public class UsuarioMin
     {
         public short Usr_UsuarioID { get; set; }

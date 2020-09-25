@@ -43,6 +43,13 @@ namespace Api_Core_GrupoForta.Controllers
             return usuarioMin;
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<bool> EnvioUsuario(ReqCorreo request)
+        {
+            return await _repository.EnviarCorreo(request);
+        }
+
         // PUT: api/Stock/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

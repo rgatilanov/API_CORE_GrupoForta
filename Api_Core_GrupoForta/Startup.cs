@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Api_Core_GrupoForta.Data;
+using Api_Core_GrupoForta.Models.Share;
 using Api_Core_GrupoForta.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -53,6 +54,9 @@ namespace Api_Core_GrupoForta
                 };
             });
 
+            services.AddCors(c => {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
 
             services.AddScoped<UsuariosRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -71,6 +75,9 @@ namespace Api_Core_GrupoForta
             }
             app.UseAuthentication();
             app.UseHttpsRedirection();
+
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            //app.UseCors(options => options.AllowAnyOrigin());
             app.UseMvc();
         }
     }
